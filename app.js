@@ -39,8 +39,8 @@ module.exports = async function (fastify, opts) {
     dir: path.join(__dirname, 'routes'),
     indexPattern: /.*routes(\.js|\.cjs)$/i,
     ignorePattern: /.*\.js/,
-    authHooksPattern: /.*hooks(\.js|\.cjs)$/i,
-    authHooks: true,
+    autoHooksPattern: /.*hooks(\.js|\.cjs)$/i,
+    autoHooks: true,
     cascadeHooks: true,
     options: Object.assign({}, opts)
   })
