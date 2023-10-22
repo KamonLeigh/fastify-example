@@ -1,6 +1,7 @@
 'use strict'
 
 module.exports = async function(fastify, _opts){
+    fastify.addHook('onRequest', fastify.authenticate);
     fastify.route({
         method: 'GET',
         url: '/',
@@ -13,15 +14,9 @@ module.exports = async function(fastify, _opts){
         },
         handler: async function listTodo(request, reply) {
          const {skip, limit, title} =  request.query;
-         const filter = title ? { title: new RegExp(title, i)} : {}
+         const data = await request.todosDataSource.listTodo({filter: {title}, skip, limit});
+         const totalCounts = await request.todosDataSource.countTodos()
 
-         const data = await this.todos.find(filter, {
-            limit,
-            skip
-         })
-         .toArray()
-
-         const totalCounts = await this.todos.countDocuments(filter);
 
          return { data, totalCounts}
         }
@@ -37,25 +32,11 @@ module.exports = async function(fastify, _opts){
             }
         },
         handler: async function createTodo(request, reply) {
-            const _id = new this.mongo.ObjectId();
-            const now = new Date();
-            const createdAt = now;
-            const modifiedAt = now;
-            const done = false;
+            const insertId = await request.todosDataSource.createTodo(request.body)
 
-            const newTodo = {
-                _id,
-                id: _id,
-                ...request.body,
-                createdAt,
-                modifiedAt,
-                done
-            }
-
-            await this.todos.insertOne(newTodo);
             reply.code(201);
 
-            return { id: _id }
+            return { id: insertId }
         }
     })
 
@@ -70,10 +51,8 @@ module.exports = async function(fastify, _opts){
             }
         },
         handler: async function readTodo(request, reply) {
-            const todo = await this.todos.findOne({
-                _id: new this.mongo.ObjectId(request.params.id)
-            }, { projection: { _id: 0 }})
-
+            const todo = await request.todosDataSource.readTodo(request.params.id)
+       
             if(!todo) {
                 reply.code(404)
                 return { error: 'Todo not found'}
@@ -91,15 +70,7 @@ module.exports = async function(fastify, _opts){
             body: fastify.getSchema('schema:todo:update:body')
         },
         handler: async function updateTodo(request, reply) {
-               const res = await this.todos.updateOne({ 
-                _id: new this.mongo.ObjectId(request.params.id)},
-                {
-                    $set: {
-                        ...request.body,
-                        modifiedAt: new Date()
-                    }
-                }
-            )
+           const res = await  request.todosDataSource.updateOne(request.params.id, request.body)
 
             if (res.modifiedCount === 0) {
                 reply.code(404)
@@ -118,7 +89,7 @@ module.exports = async function(fastify, _opts){
             params: fastify.getSchema('schema:todo:read:params')
         },
         handler: async function deleteTodo(request, reply) {
-            const res = await this.todos.deleteOne({ _id: new fastify.mongo.ObjectId(request.params.id)});
+            const res = await request.todosDataSource.deleteTodo(request.params.id)
             if(res.deletedCount === 0) {
                 reply.code(404);
                 return { error: "Todo not found"}
@@ -135,18 +106,8 @@ module.exports = async function(fastify, _opts){
             params: fastify.getSchema('schema:todo:status:params')
         },
         handler: async function changeStatus(request, reply) {
-            const done = request.params.status === 'done';
-
-            const res = await this.todos.updateOne(
-                {
-                    _id: new this.mongo.ObjectId(request.params.id)
-                },{
-                    $set: {
-                        done,
-                        modifiedAt: new Date()
-                    }
-                }
-            )
+          const res = await  request.todosDataSource.updateTodo(request.params.id, { done: true})
+       
 
             if(res.modifiedCount === 0) {
                 reply.code(404)
@@ -154,6 +115,8 @@ module.exports = async function(fastify, _opts){
             }
 
             reply.code(204)
-        }
+        },
+        np
+    
     })
 }
