@@ -1,4 +1,4 @@
-"use strict"
+'use strict'
 const fp = require('fastify-plugin')
 const fastifyJwt = require('@fastify/jwt')
 
@@ -6,11 +6,11 @@ module.exports = fp(async function authenticationPlugin (fastify, opts) {
   const revokedTokens = new Map()
 
   fastify.register(fastifyJwt, {
-    secret: "SUPERSECRET",
+    secret: fastify.secrets.JWT_SECRET,
     trusted: function isTrusted (request, decodedToken) {
       return !revokedTokens.has(decodedToken.jti)
     }
-    
+
   })
 
   fastify.decorate('authenticate', async function authenticate (request, reply) {

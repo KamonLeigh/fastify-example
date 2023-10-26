@@ -7,4 +7,4 @@ module.exports = fp(function (fastify, opts, next) {
   fastify.addSchema(require('./skip.json'))
 
   next()
-}, {name: 'application-schemas'})
+}, { name: 'application-schemas' })

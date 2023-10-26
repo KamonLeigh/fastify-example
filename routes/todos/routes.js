@@ -1,7 +1,7 @@
 'use strict'
 const fp = require('fastify-plugin')
 
-module.exports = fp( async function (fastify, _opts) {
+module.exports = fp(async function (fastify, _opts) {
   fastify.addHook('onRequest', fastify.authenticate)
   fastify.route({
     method: 'GET',
@@ -116,6 +116,6 @@ module.exports = fp( async function (fastify, _opts) {
 
   })
 }, {
-  name: "todo-routes",
-  dependencies: ["authentication-plugin"]
+  name: 'todo-routes',
+  dependencies: ['authentication-plugin']
 })

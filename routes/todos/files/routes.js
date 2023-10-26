@@ -105,8 +105,8 @@ module.exports = fp(async function fileTodoRoutes (fastify, _opts) {
       }))
     }
   })
-},{
-    name: "files-route"
+}, {
+  name: 'files-route'
 }
 
 )
