@@ -1,10 +1,11 @@
 'use strict'
 
 const fastifyMultipart = require('@fastify/multipart')
+const fp = require('fastify-plugin')
 const { parse: csvParse } = require('csv-parse')
 const { stringify: csvStringify } = require('csv-stringify')
 
-module.exports = async function fileTodoRoutes (fastify, _opts) {
+module.exports = fp(async function fileTodoRoutes (fastify, _opts) {
   await fastify.register(fastifyMultipart, {
     attachFieldsToBody: 'keyValues',
     async onFile (part) {
@@ -104,4 +105,8 @@ module.exports = async function fileTodoRoutes (fastify, _opts) {
       }))
     }
   })
+},{
+    name: "files-route"
 }
+
+)
