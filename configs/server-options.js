@@ -1,7 +1,7 @@
 module.exports = {
-    ajv: {
-      customOptions: {
-        removeAdditional: 'all'
-      }
+  ajv: {
+    customOptions: {
+      removeAdditional: 'all'
     }
   }
+}

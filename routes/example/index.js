@@ -5,7 +5,7 @@ module.exports = async function (fastify, opts) {
     return 'this is an example'
   })
 
-  fastify.get('hello', async function(request, reply){
+  fastify.get('hello', async function (request, reply) {
     return 'this is an hello route'
   })
 }
