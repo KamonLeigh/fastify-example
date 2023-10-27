@@ -41,7 +41,7 @@ module.exports = fp(
       }
     })
 
-    fastify.post('authenticate', {
+    fastify.post('/authenticate', {
       schema: {
         body: fastify.getSchema('schema:auth:register'),
         response: {
