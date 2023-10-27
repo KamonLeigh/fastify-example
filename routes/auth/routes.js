@@ -98,7 +98,7 @@ module.exports = fp(
       const token = await request.generateToken() // [3.3]
       return { token }
     }
-    fastify.post('/logot', {
+    fastify.post('/logout', {
       onRequest: fastify.authenticate,
       handler: async function logoutHandler (request, reply) {
         request.revokeToken()

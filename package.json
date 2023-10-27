@@ -36,6 +36,6 @@
   },
   "devDependencies": {
     "standard": "^17.1.0",
-    "tap": "^16.1.0"
+    "tap": "^15.2.3"
   }
 }
