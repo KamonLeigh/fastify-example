@@ -36,7 +36,8 @@ async function build (t) {
 
 const defaultEnv = {
   NODE_ENV: 'test',
-  MONGO_URL: 'mongodb://localhost:27017/test'
+  MONGO_URL: 'mongodb://localhost:27017/test',
+  JWT_SECRET: 'UFUIUFIUUSIUISUUISUI'
 }
 
 async function buildApp (t, env, serverOptions) {
