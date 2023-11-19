@@ -4,7 +4,6 @@ const fp = require('fastify-plugin')
 const generateHash = require('./generate-hash')
 
 // Expose the plugin to the route path /register instead of /auth/register
-module.exports.prefixOverride = ''
 
 module.exports = fp(
   async function applicationAuth (fastify, opts) {
@@ -111,3 +110,4 @@ module.exports = fp(
     encapsulate: true
   }
 )
+module.exports.prefixOverride = '' 
