@@ -14,7 +14,7 @@ module.exports = fp(async function (fastify, _opts) {
 
     },
     handler: async function listTodo (request, reply) {
-      //return 'test'
+      // return 'test'
       const { skip, limit, title } = request.query
       const data = await request.todosDataSource.listTodo({ filter: { title }, skip, limit })
       const totalCounts = await request.todosDataSource.countTodos()
@@ -120,5 +120,5 @@ module.exports = fp(async function (fastify, _opts) {
   name: 'todo-routes',
   dependencies: ['authentication-plugin'],
   encapsulate: true
-  
+
 })
