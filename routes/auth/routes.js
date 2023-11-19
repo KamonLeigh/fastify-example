@@ -110,4 +110,4 @@ module.exports = fp(
     encapsulate: true
   }
 )
-module.exports.prefixOverride = '' 
+module.exports.prefixOverride = ''
