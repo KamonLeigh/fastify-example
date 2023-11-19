@@ -6,7 +6,7 @@ const { buildApp } = require('./helper')
 // t.todo('the application should start', async() =>{})
 t.test('the application should start', async (t) => {
   const app = await buildApp(t, {
-    MONGO_URL: 'mongodb://localhost:27017/basis-test-db'
+    MONGO_URL: 'mongodb://0.0.0.0:27017/basis-test-db'
   })
 
   await app.ready()
@@ -15,7 +15,7 @@ t.test('the application should start', async (t) => {
 
 t.test('the alive route is online', async (t) => {
   const app = await buildApp(t, {
-    MONGO_URL: 'mongodb://localhost:27017/basis-test-db'
+    MONGO_URL: 'mongodb://0.0.0.0:27017/basis-test-db'
   })
 
   const response = await app.inject({
