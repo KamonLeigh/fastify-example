@@ -16,6 +16,7 @@ module.exports = fp(async function todoAutoHooks (fastify, _opts) {
   fastify.addHook('onRequest', async (request, reply) => {
     request.todosDataSource = {
       async countTodos (filter = {}) {
+        filter.userId = request.user.id
         const totalCounts = await todos.countDocuments(filter)
         return totalCounts
       },
@@ -47,7 +48,7 @@ module.exports = fp(async function todoAutoHooks (fastify, _opts) {
 
         return cursor.toArray()
       },
-      async createTodo (todoList) {
+      async createTodos (todoList) {
         const now = new Date()
         const userId = request.user.id
 
@@ -91,6 +92,23 @@ module.exports = fp(async function todoAutoHooks (fastify, _opts) {
       async deleteTodo (id) {
         const res = await todos.deleteOne({ _id: new fastify.mongo.ObjectId(id), userId: request.user.id })
         return res
+      },
+      async createTodo ({ title }) {
+        const _id = new fastify.mongo.ObjectId()
+        const now = new Date()
+        const userId = request.user.id
+
+        const { insertedId } = await todos.insertOne({
+          _id,
+          userId,
+          title,
+          id: _id,
+          createdAt: now,
+          modifiedAt: now,
+          done: false
+        })
+
+        return insertedId
       }
 
     }
