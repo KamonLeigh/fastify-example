@@ -95,4 +95,8 @@ module.exports = fp(async function todoAutoHooks (fastify, _opts) {
 
     }
   })
+}, {
+  encapsulate: true,
+  dependencies: ['@fastify/mongodb'],
+  name: 'todo-store'
 })

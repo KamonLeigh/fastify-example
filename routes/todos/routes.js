@@ -14,12 +14,11 @@ module.exports = fp(async function (fastify, _opts) {
 
     },
     handler: async function listTodo (request, reply) {
-      // return 'test'
       const { skip, limit, title } = request.query
       const data = await request.todosDataSource.listTodo({ filter: { title }, skip, limit })
-      const totalCounts = await request.todosDataSource.countTodos()
+      const totalCount = await request.todosDataSource.countTodos()
 
-      return { data, totalCounts }
+      return { data, totalCount }
     }
   })
 

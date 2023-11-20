@@ -1,6 +1,6 @@
 {
     "type": "object",
-    "$id": "schema:register",
+    "$id": "schema:auth:register",
     "additionalProperties": false,
     "required": [
         "username",

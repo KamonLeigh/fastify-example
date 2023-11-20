@@ -5,6 +5,7 @@
 
 const { build: buildApplication } = require('fastify-cli/helper')
 const path = require('path')
+const crypto = require('node:crypto')
 const AppPath = path.join(__dirname, '..', 'app.js')
 const fcli = require('fastify-cli/helper')
 
@@ -37,7 +38,7 @@ async function build (t) {
 const defaultEnv = {
   NODE_ENV: 'test',
   MONGO_URL: 'mongodb://0.0.0.0:27017/test',
-  JWT_SECRET: 'UFUIUFIUUSIUISUUISUI'
+  JWT_SECRET: 'secret-1234567890'
 }
 
 async function buildApp (t, env, serverOptions) {
@@ -51,8 +52,38 @@ async function buildApp (t, env, serverOptions) {
   return app
 }
 
+async function buildUser (app) {
+  const randomUser = crypto.randomBytes(16).toString('hex')
+  const password = 'icanpass'
+
+  await app.inject({
+    method: 'POST',
+    url: '/register',
+    payload: {
+      username: randomUser,
+      password
+    }
+  })
+
+  const login = await app.inject({
+    method: 'POST',
+    url: '/authenticate',
+    payload: {
+      username: randomUser,
+      password
+    }
+  })
+
+  return {
+    username: randomUser,
+    password,
+    token: login.json().token
+  }
+}
+
 module.exports = {
   config,
   build,
-  buildApp
+  buildApp,
+  buildUser
 }
