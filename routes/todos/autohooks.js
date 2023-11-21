@@ -75,7 +75,7 @@ module.exports = fp(async function todoAutoHooks (fastify, _opts) {
         return todo
       },
       async updateTodo (id, body) {
-        const res = await todos.updateTodo({
+        const res = await todos.updateOne({
           _id: new fastify.mongo.ObjectId(id),
           userId: request.user.id
         },

@@ -178,6 +178,75 @@ t.test('search to do items with paginations', async (t) => {
   t.equal(wrongPagination.json().data.length, 0)
 })
 
+t.test('do a todo item', async (t) => {
+  const { app } = t.context
+  const { token } = t.context.user
+
+  const noItem = await app.inject({
+    method: 'PUT',
+    url: `/todos/${'a'.repeat(24)}`,
+    payload: { done: true },
+    ...headers(token)
+  })
+  t.equal(noItem.statusCode, 404, 'no item')
+
+  const create = await app.inject({
+    url: '/todos',
+    method: 'POST',
+    payload: { title: 'hello world' },
+    ...headers(token)
+  })
+
+  t.equal(create.statusCode, 201)
+
+  const edit = await app.inject({
+    url: `/todos/${create.json().id}`,
+    method: 'PUT',
+    payload: { title: 'hello word 2', done: true },
+    ...headers(token)
+  })
+
+  t.equal(edit.statusCode, 204)
+
+  const updateItem = await app.inject({
+    url: `/todos/${create.json().id}`,
+    ...headers(token)
+  })
+
+  t.equal(updateItem.statusCode, 200)
+  t.match(updateItem.json(), {
+    id: create.json().id,
+    title: 'hello word 2',
+    done: true
+  })
+})
+
+t.test('handle delete todo', async (t) => {
+  const { app } = t.context
+  const { token } = t.context.user
+
+  const noItem = await app.inject({
+    url: `/todos/${'a'.repeat(24)}`,
+    method: 'DELETE',
+    ...headers(token)
+  })
+  t.equal(noItem.statusCode, 404)
+
+  const create = await app.inject({
+    url: '/todos',
+    method: 'POST',
+    payload: { title: 'hello world' },
+    ...headers(token)
+  })
+  t.equal(create.statusCode, 201)
+
+  const deleteItem = await app.inject({
+    url: `/todos/${create.json().id}`,
+    method: 'DELETE',
+    ...headers(token)
+  })
+  t.equal(deleteItem.statusCode, 204)
+})
 function headers (token) {
   return {
     headers: {
