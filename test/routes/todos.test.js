@@ -127,6 +127,57 @@ t.test('get todo item', async (t) => {
   })
 })
 
+t.test('search to do items with paginations', async (t) => {
+  const { app } = t.context
+  const { token } = t.context.user
+
+  const todos = ['hello world', 'hello world 2', 'hello world foo 3']
+
+  for (const title of todos) {
+    const create = await app.inject({
+      url: '/todos',
+      method: 'POST',
+      payload: { title },
+      ...headers(token)
+    })
+
+    t.equal(create.statusCode, 201, `created "${title}" item`)
+  }
+
+  const items = await app.inject({
+    url: '/todos',
+    ...headers(token)
+  })
+  t.equal(items.statusCode, 200)
+  t.equal(items.json().totalCount, todos.length)
+
+  const filter = await app.inject({
+    url: '/todos',
+    query: { title: 'foo' },
+    ...headers(token)
+  })
+
+  t.equal(filter.statusCode, 200)
+  t.equal(filter.json().data.length, 1)
+
+  const pagination = await app.inject({
+    url: '/todos',
+    query: { skip: 1, limit: 1 },
+    ...headers(token)
+  })
+  t.equal(pagination.statusCode, 200)
+  t.equal(pagination.json().data.length, 1)
+  t.equal(pagination.json().data[0].title, 'hello world 2')
+
+  const wrongPagination = await app.inject({
+    url: '/todos',
+    query: { skip: 100, limit: 100 },
+    ...headers(token)
+  })
+  t.equal(wrongPagination.statusCode, 200)
+  t.equal(wrongPagination.json().data.length, 0)
+})
+
 function headers (token) {
   return {
     headers: {
