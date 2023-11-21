@@ -70,6 +70,63 @@ t.test('User isolation', async (t) => {
   }
 })
 
+t.test('insert todo', async (t) => {
+  const { app, user } = t.context
+
+  const create = await app.inject({
+    url: '/todos',
+    method: 'POST',
+    payload: { title: 'hello world' },
+    ...headers(user.token)
+  })
+
+  t.equal(create.statusCode, 201)
+  t.match(create.json(), { id: /\w{24}/ })
+
+  const list = await app.inject({
+    url: '/todos',
+    ...headers(user.token)
+  })
+  t.match(list.json(), {
+    data: [{
+      id: /\w{24}/,
+      done: false,
+      title: 'hello world'
+    }],
+    totalCount: 1
+  })
+})
+
+t.test('get todo item', async (t) => {
+  const { app } = t.context
+  const { token } = t.context.user
+
+  const noItem = await app.inject({
+    url: `/todos/${'a'.repeat(24)}`,
+    ...headers(token)
+  })
+  t.equal(noItem.statusCode, 404, 'no item')
+
+  const create = await app.inject({
+    url: '/todos',
+    method: 'POST',
+    payload: { title: 'hello world' },
+    ...headers(token)
+  })
+  t.equal(create.statusCode, 201)
+
+  const item = await app.inject({
+    url: `/todos/${create.json().id}`,
+    ...headers(token)
+  })
+  t.equal(item.statusCode, 200)
+  t.match(item.json(), {
+    id: create.json().id,
+    title: 'hello world',
+    done: false
+  })
+})
+
 function headers (token) {
   return {
     headers: {
