@@ -16,7 +16,8 @@
     "test:nostop": "tap --before=test/before.js test/**/**.test.js --no-check-coverage",
     "test:coverage": "tap --coverage-report=html --before=test/run-before.js test/**/**.test.js --after=test/run-after.js",
     "mongo:start": "docker run -d -p 27017:27017 --rm --name fastify-mongo mongo:6",
-    "mongo:stop": "docker container stop fastify-mongo"
+    "mongo:stop": "docker container stop fastify-mongo",
+    "docker-compose:test": "docker-compose -f docker-compose-test.yml up"
   },
   "keywords": [],
   "author": "",
