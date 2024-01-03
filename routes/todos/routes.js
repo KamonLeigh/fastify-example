@@ -57,6 +57,7 @@ module.exports = fp(async function (fastify, _opts) {
         return { error: 'Todo not found' }
       }
 
+      reply.code(200)
       return todo
     }
   })
@@ -104,7 +105,7 @@ module.exports = fp(async function (fastify, _opts) {
       params: fastify.getSchema('schema:todo:status:params')
     },
     handler: async function changeStatus (request, reply) {
-      const res = await request.todosDataSource.updateTodo(request.params.id, { done: true })
+      const res = await request.todosDataSource.updateTodo(request.params.id, { done: request.params.status === 'done' })
 
       if (res.modifiedCount === 0) {
         reply.code(404)
