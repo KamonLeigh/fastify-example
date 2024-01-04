@@ -68,7 +68,6 @@ module.exports = async function fileTodoRoutes (fastify, _opts) {
     },
     handler: async function listTodo (request, reply) {
       const inserted = await request.todosDataSource.createTodos(request.body.todoListFile)
-      console.log(inserted)
       reply.code(201)
       return inserted
     }
