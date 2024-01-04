@@ -10,7 +10,7 @@ const { buildApp, buildUser } = require('../helper')
 
 t.beforeEach(async (t) => {
   const app = await buildApp(t, {
-    MONGO_URL: 'mongodb://localhost:27017/test-' + Date.now()
+    MONGO_URL: 'mongodb://0.0.0.0:27017/test-' + Date.now()
   })
   const user = await buildUser(app)
   t.context = { app, user }
