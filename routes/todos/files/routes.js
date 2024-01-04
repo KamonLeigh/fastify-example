@@ -1,11 +1,10 @@
 'use strict'
 
 const fastifyMultipart = require('@fastify/multipart')
-const fp = require('fastify-plugin')
 const { parse: csvParse } = require('csv-parse')
 const { stringify: csvStringify } = require('csv-stringify')
 
-module.exports = fp(async function fileTodoRoutes (fastify, _opts) {
+module.exports = async function fileTodoRoutes (fastify, _opts) {
   await fastify.register(fastifyMultipart, {
     attachFieldsToBody: 'keyValues',
     async onFile (part) {
@@ -24,6 +23,7 @@ module.exports = fp(async function fileTodoRoutes (fastify, _opts) {
           done: line.done === 'true'
         })
       }
+
       part.value = lines
     },
     sharedSchemaId: 'schema:todo:import:file',
@@ -31,7 +31,8 @@ module.exports = fp(async function fileTodoRoutes (fastify, _opts) {
       fieldNameSize: 50,
       fieldSize: 100,
       fields: 10,
-      fileSize: 1_000_000 // The max file size in bytes (1MB)
+      fileSize: 1_000_000, // The max file size in bytes (1MB)
+      files: 1
     }
   })
   fastify.addHook('onRequest', fastify.authenticate)
@@ -55,7 +56,6 @@ module.exports = fp(async function fileTodoRoutes (fastify, _opts) {
                 done: { type: 'boolean' }
               }
             }
-
           }
         }
       },
@@ -68,10 +68,10 @@ module.exports = fp(async function fileTodoRoutes (fastify, _opts) {
     },
     handler: async function listTodo (request, reply) {
       const inserted = await request.todosDataSource.createTodos(request.body.todoListFile)
+      console.log(inserted)
       reply.code(201)
       return inserted
     }
-
   })
 
   fastify.route({
@@ -105,8 +105,4 @@ module.exports = fp(async function fileTodoRoutes (fastify, _opts) {
       }))
     }
   })
-}, {
-  name: 'files-route'
 }
-
-)

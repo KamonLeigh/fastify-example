@@ -59,13 +59,15 @@ module.exports = fp(async function todoAutoHooks (fastify, _opts) {
             _id,
             userId,
             id: _id,
+            ...rawTodo,
             createdAt: now,
             modifiedAt: now
           }
         })
 
         await todos.insertMany(toInsert)
-        return toInsert.map((todo) => todo._id)
+
+        return toInsert.map((todo) => ({ id: todo._id }))
       },
       async readTodo (id, projection = {}) {
         const todo = await todos.findOne({
