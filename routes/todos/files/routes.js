@@ -83,7 +83,7 @@ module.exports = async function fileTodoRoutes (fastify, _opts) {
       const { title } = request.query
 
       // We manage the cursor as the data could be huge
-      const cursor = await request.todosDataSource.listTodos({
+      const cursor = await request.todosDataSource.listTodo({
         filter: { title },
         skip: 0,
         limit: undefined,
