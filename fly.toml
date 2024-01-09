@@ -20,3 +20,8 @@ primary_region = "lhr"
   cpu_kind = "shared"
   cpus = 1
   memory_mb = 1024
+
+[metrics]
+  port = 9001
+  path = "/metrics"
+
