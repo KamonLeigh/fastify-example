@@ -6,7 +6,7 @@ ARG NPM_TOKEN
 ENV NPM_TOKEN $NPM_TOKEN
 RUN npm ci --only=production --ignore-scripts
 FROM node:18-alpine
-RUN apk update && app add --no-cache dumb-init 
+RUN apk update && apk add --no-cache dumb-init
 ENV HOME=/home/app
 ENV APP_HOME=$HOME/node/
 ENV NODE_ENV=production
