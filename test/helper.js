@@ -46,8 +46,8 @@ async function buildApp (t, env, serverOptions) {
     config({ ...defaultEnv, ...env }),
     serverOptions
   )
-  // t.teardown(() => { app.close() })
-  t.teardown(app.close.bind(app))
+  t.teardown(() => { app.close() })
+  // t.teardown(app.close.bind(app))
 
   return app
 }

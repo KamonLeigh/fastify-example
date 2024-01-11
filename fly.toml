@@ -1,12 +1,13 @@
-# fly.toml app configuration file generated for fastify-app-book-muddy-shape-2842-black-shadow-669-ancient-field-6816-proud-tree-702 on 2024-01-10T01:31:24Z
+# fly.toml app configuration file generated for fastify-app-book-muddy-shape-2842-black-shadow-669-ancient-field-6816-proud-tree-702-bold-frog-7798 on 2024-01-10T01:45:13Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "fastify-app-book-muddy-shape-2842-black-shadow-669-ancient-field-6816-proud-tree-702"
+app = "fastify-app-book-muddy-shape-2842-black-shadow-669-ancient-field-6816-proud-tree-702-bold-frog-7798"
 primary_region = "lhr"
 
 [build]
+
 
 [http_service]
   internal_port = 3000
