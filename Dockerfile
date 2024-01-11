@@ -6,7 +6,7 @@ ARG NPM_TOKEN
 ENV NPM_TOKEN $NPM_TOKEN
 RUN npm ci --only=production --ignore-scripts
 FROM node:18-alpine
-RUN apk update && apk add --no-cache dumb-init
+RUN apk update && app add --no-cache dumb-init
 ENV HOME=/home/app
 ENV APP_HOME=$HOME/node/
 ENV NODE_ENV=production
@@ -16,4 +16,4 @@ COPY --chown=node:node --from=builder /build $APP_HOME
 USER node
 EXPOSE 3000
 ENTRYPOINT [ "dumb-init" ]
-CMD ["./node_modules/.bin/fastify", "start", "--address", "0.0.0.0", "-l", "info", "--options", "app.js"]
+CMD ["./node_modules/.bin/fastify", "start", "-a", "0.0.0.0", "-l", "info", "--options", "app.js"]
