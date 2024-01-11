@@ -8,7 +8,7 @@
   },
   "scripts": {
     "pretest": "npm run lint",
-    "start": "fastify start -l info --options app.js",
+    "start": "fastify start -l info --address 0.0.0.0 --options app.js",
     "dev": "npm run start -- --watch --pretty-logs -debug",
     "lint": "standard",
     "lint:fix": "standard --fix",

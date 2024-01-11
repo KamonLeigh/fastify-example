@@ -80,6 +80,7 @@ t.test('successful login', async (t) => {
       password: 'icanpass'
     }
   })
+
   t.equal(login.statusCode, 200)
   t.match(login.json(), { token: /(\w*\.){2}.*/ }, 'the token is valid JWT')
 
