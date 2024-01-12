@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "fastify-app-book-muddy-shape-2842-black-shadow-669-ancient-field-6816-proud-tree-702-bold-frog-7798"
+app = "fastify-app-book"
 primary_region = "lhr"
 
 [build]
