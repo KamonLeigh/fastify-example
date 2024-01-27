@@ -1,3 +1,5 @@
+# Fastify-App-Todo
+
 # Getting Started with [Fastify-CLI](https://www.npmjs.com/package/fastify-cli)
 This project was bootstrapped with Fastify-CLI.
 
@@ -6,6 +8,9 @@ This project was bootstrapped with Fastify-CLI.
 In the project directory, you can run:
 
 ### `npm run dev`
+### `npm run mongo:start`
+
+First command will start server and the second will start mongo database in Docker
 
 To start the app in dev mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
