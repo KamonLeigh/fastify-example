@@ -1,6 +1,9 @@
 'use strict'
-require('pino-mongodb')
-const loggerOptions = require('./logger-options')
+
+let loggerOptions
+if (process.env.NODE_ENV === 'production') {
+  loggerOptions = require('./logger-options')
+}
 const crypto = require('crypto')
 module.exports = {
   disableRequestLogging: true,
