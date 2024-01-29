@@ -1,6 +1,6 @@
 {
     "type": "object",
-    "$id": "schema:todo:status:param",
+    "$id": "schema:todo:status:params",
     "required": ["id", "status"],
     "additionalProperties": false,
     "properties": {
